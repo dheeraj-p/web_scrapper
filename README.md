@@ -1,4 +1,4 @@
-## Python Web Scrapper
+## Python Web Scraper
 
 ### Prerequisites
 
@@ -26,7 +26,7 @@ $ fastapi dev main.py
 
 ### Usage
 
-The API for scrapping webpage is available on route `/scrap`. API is protected by a plain static authentication token:
+The API for scrapping webpage is available on route `/scrape`. API is protected by a plain static authentication token:
 
 ```
 Bearer some_random_token
@@ -36,6 +36,6 @@ Use following curl command for hitting the API:
 
 ```sh
 curl --request GET \
-  --url 'http://127.0.0.1:8000/scrap?page_count=2' \
+  --url 'http://127.0.0.1:8000/scrape?page_count=2' \
   --header 'Authorization: Bearer Bearer some_random_token'
 ```

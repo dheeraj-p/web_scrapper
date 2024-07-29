@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from scrapper import ProductsScrapper
+from scraper import ProductsScraper
 from storage import LocalStorage, ImageDownloader
 from notifier import ConsoleNotifier
 from requests import api
@@ -22,13 +22,13 @@ def get_user(creds: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
     )
 
 
-@app.get("/scrap")
-def scrap_pages(username: Annotated[str, Depends(get_user)], page_count: int = 1):
+@app.get("/scrape")
+def scrape_pages(username: Annotated[str, Depends(get_user)], page_count: int = 1):
     # Hard coded for now, can be taken from environment variables
     storage = LocalStorage("products.json")
     notifier = ConsoleNotifier()
     image_downloader = ImageDownloader(api, "images")
 
     url = "https://dentalstall.com/shop/page/"
-    ProductsScrapper(api, url, page_count, storage, notifier, image_downloader).scrap()
+    ProductsScraper(api, url, page_count, storage, notifier, image_downloader).scrape()
     return {"status": "Success"}

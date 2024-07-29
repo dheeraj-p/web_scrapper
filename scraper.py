@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from requests import api
 
 
-class ProductsScrapper:
+class ProductsScraper:
     def __init__(
         self,
         http: api,
@@ -22,15 +22,15 @@ class ProductsScrapper:
         self.notifier = notifier
         self.image_downloader = image_downloader
 
-    def scrap(self):
+    def scrape(self):
         products = []
         for page in range(1, self.total_pages + 1):
-            products += self._scrap_page(page)
+            products += self._scrape_page(page)
 
         self.storage.save_bulk(products)
         self.notifier.nofity(Notification(len(products), len(products)))
 
-    def _scrap_page(self, page_num: int):
+    def _scrape_page(self, page_num: int):
         res = self.http.get("{}{}".format(self.url, page_num))
         soup = BeautifulSoup(res.text, "html.parser")
 
