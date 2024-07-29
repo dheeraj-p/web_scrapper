@@ -1,14 +1,22 @@
 from storage import StorageEngine
 from product import Product
+from notifier import Notifier, Notification
 from bs4 import BeautifulSoup
 import requests
 
 
 class ProductsScrapper:
-    def __init__(self, url: str, total_pages: int, storage: StorageEngine):
+    def __init__(
+        self,
+        url: str,
+        total_pages: int,
+        storage: StorageEngine,
+        notifier: Notifier,
+    ):
         self.url = url
         self.total_pages = total_pages
         self.storage = storage
+        self.notifier = notifier
 
     def scrap(self):
         products = []
@@ -16,6 +24,7 @@ class ProductsScrapper:
             products += self._scrap_page(page)
 
         self.storage.save_bulk(products)
+        self.notifier.nofity(Notification(len(products), len(products)))
 
     def _scrap_page(self, page_num: int):
         res = requests.get("{}{}".format(self.url, page_num))

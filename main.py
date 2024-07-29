@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from scrapper import ProductsScrapper
 from storage import LocalStorage
+from notifier import ConsoleNotifier
 
 
 app = FastAPI()
@@ -9,7 +10,8 @@ app = FastAPI()
 @app.get("/")
 def read_hello_world():
     storage = LocalStorage("products.json")
+    notifier = ConsoleNotifier()
     url = "https://dentalstall.com/shop/page/"
-    p = ProductsScrapper(url, 5, storage)
-    p.scrap()
+
+    ProductsScrapper(url, 5, storage, notifier).scrap()
     return "Success"
